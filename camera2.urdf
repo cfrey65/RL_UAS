@@ -1,0 +1,99 @@
+<?xml version="1.0"?>
+<robot name="camera2">
+
+  <!-- Base Link -->
+  <link name="base_link">
+    <visual>
+      <geometry>
+        <box size="0.16 0.16 0.04"/>
+      </geometry>
+      <material name="blue">
+        <color rgba="0 0 1 1"/>
+      </material>
+    </visual>
+    <inertial>
+        <mass value="1"/>
+    	  <inertia ixx="0" ixy="0.0" ixz="0" iyy="0" iyz="0.0" izz="0"/>
+  	</inertial>
+    <collision>
+        <geometry>
+          <box size="0.16 0.16 0.04"/>
+        </geometry>
+    </collision>
+  </link>
+
+  <!-- Skinny Rectangular Link -->
+  <link name="rect_link">
+    <visual>
+      <geometry>
+        <box size="0.025 0.025 0.25"/>
+      </geometry>
+      <origin xyz="0 0 0.06"/>
+      <material name="black">
+        <color rgba="1 1 1 1"/>
+      </material>
+    </visual>
+    <inertial>
+        <mass value="0.5"/>
+    	  <inertia ixx="0" ixy="0.0" ixz="0" iyy="0" iyz="0.0" izz="0"/>
+  	</inertial>
+    <collision>
+        <geometry>
+          <box size="0.025 0.025 0.25"/>
+        </geometry>
+    </collision>
+  </link>
+
+  <!-- Joint from base to rectangular link -->
+  <joint name="base_to_rect" type="fixed">
+    <parent link="base_link"/>
+    <child link="rect_link"/>
+    <origin xyz="0 0 0.06" rpy="0 0 0"/>
+  </joint>
+
+  <link name="par_link">
+    <!-- No visual, no geometry, no offset -->
+    <inertial>
+        <mass value="0"/>
+    	  <inertia ixx="0" ixy="0.0" ixz="0" iyy="0" iyz="0.0" izz="0"/>
+  	</inertial>
+  </link>
+
+  <joint name="rect_to_cyl_X" type="revolute">
+    <parent link="rect_link"/>
+    <child link="par_link"/>
+    <origin xyz="0 0 0" rpy="0 0 0"/>
+    <axis xyz="0 0 1"/>
+    <limit effort="1" velocity="10" lower="-1.53" upper="1.53"/>
+  </joint>
+
+  <!-- Cylindrical Link -->
+  <link name="cyl_link">
+    <visual>
+      <geometry>
+        <cylinder radius="0.04" length="0.15"/>
+      </geometry>
+      <origin xyz="0 0 0.26" rpy="0 0 0"/>
+      <material name="red">
+        <color rgba="3 0.7 0 1"/>
+      </material>
+    </visual>
+    <inertial>
+        <mass value="0.75"/>
+    	  <inertia ixx="0" ixy="0.0" ixz="0" iyy="0" iyz="0.0" izz="0"/>
+  	</inertial>
+    <collision>
+        <geometry>
+          <cylinder radius="0.04" length="0.15"/>
+        </geometry>
+    </collision>
+  </link>
+
+  <joint name="rect_to_cyl_Y" type="revolute">
+    <parent link="par_link"/>
+    <child link="cyl_link"/>
+    <origin xyz="0 0 0.0" rpy="0 0 0"/>
+    <axis xyz="0 1 0"/>
+    <limit effort="1" velocity="10" lower="-1.53" upper="1.53"/>
+  </joint>
+</robot>
